@@ -1,7 +1,12 @@
 package no.bargainhunter.api.model;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
 import no.bargainhunter.api.utils.ObjectMapperSingelton;
 
 import org.junit.Test;
@@ -29,7 +34,9 @@ public class BarTest {
 		price.setPrice(10);
 		menuItem.setProduct(p);
 		menuItem.setPriceTag(price);
-		bar.setMenuItems(new MenuItem[] {menuItem});
+		Collection<MenuItem> menuItems = new ArrayList<MenuItem>();
+		menuItems.add(menuItem);
+		bar.setMenuItems(menuItems);
 		
 		String json = ObjectMapperSingelton.getObjectMapper().writeValueAsString(bar);
 		assertEquals("{\"name\":\"En bar\",\"location\":{\"latitude\":1.0,\"longitude\":2.0},\"menuItems\":[{\"product\":{\"name\":\"Hansa\"},\"priceTag\":{\"price\":10.0,\"startTime\":0,\"endTime\":0}}]}",  json);

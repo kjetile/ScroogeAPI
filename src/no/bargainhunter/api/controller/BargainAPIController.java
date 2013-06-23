@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import no.bargainhunter.api.model.Bar;
 import no.bargainhunter.api.model.Product;
+import no.bargainhunter.api.persistence.EstablishmentPersistor;
 import no.bargainhunter.api.persistence.PMF;
 
 import org.apache.commons.logging.Log;
@@ -54,13 +55,8 @@ public class BargainAPIController {
 	public String addBar(@RequestBody final Bar bar,
 			HttpServletResponse response, Model model) {
 		
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		
-		try {
-			pm.makePersistent(bar);
-		} finally {
-			pm.close();
-		}
+		EstablishmentPersistor<Bar> establishmentPersistor = new EstablishmentPersistor<Bar>();
+		establishmentPersistor.persistEstablishment(bar);
 		
 		return "OK";
 	}

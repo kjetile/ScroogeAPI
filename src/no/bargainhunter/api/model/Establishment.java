@@ -1,5 +1,7 @@
 package no.bargainhunter.api.model;
 
+import java.util.Collection;
+
 import javax.jdo.annotations.Discriminator;
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -8,8 +10,6 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-
-import org.codehaus.jackson.annotate.JsonManagedReference;
 
 import com.google.appengine.api.datastore.Key;
 
@@ -34,7 +34,7 @@ public abstract class Establishment {
 	private Location location;
 	
 	@Persistent
-	private MenuItem[] menuItems;
+	private Collection<MenuItem> menuItems;
 	
 	public String getName() {
 		return name;
@@ -49,10 +49,10 @@ public abstract class Establishment {
 		this.location = location;
 	}
 	
-	public MenuItem[] getMenuItems() {
+	public Collection<MenuItem>  getMenuItems() {
 		return menuItems;
 	}
-	public void setMenuItems(MenuItem[] menuItems) {
+	public void setMenuItems(Collection<MenuItem>  menuItems) {
 		this.menuItems = menuItems;
 	}
 }

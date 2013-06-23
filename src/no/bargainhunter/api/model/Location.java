@@ -1,5 +1,7 @@
 package no.bargainhunter.api.model;
 
+import java.util.Collection;
+
 import javax.jdo.annotations.Discriminator;
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -28,6 +30,9 @@ public class Location {
 	@Persistent
 	private double longitude;
 	
+	@Persistent
+	private Collection<String> cells;
+	
 	public double getLatitude() {
 		return latitude;
 	}
@@ -39,5 +44,11 @@ public class Location {
 	}
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
+	}
+	public Collection<String> getCells() {
+		return cells;
+	}
+	public void setCells(Collection<String> cells) {
+		this.cells = cells;
 	}
 }
