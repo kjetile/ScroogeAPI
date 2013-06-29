@@ -1,14 +1,17 @@
 package no.bargainhunter.api.controller;
 
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.servlet.http.HttpServletResponse;
 
 import no.bargainhunter.api.model.Bar;
+import no.bargainhunter.api.model.MenuItem;
 import no.bargainhunter.api.model.Product;
-import no.bargainhunter.api.persistence.EstablishmentPersistor;
+import no.bargainhunter.api.persistence.BarPersistor;
 import no.bargainhunter.api.persistence.PMF;
 
 import org.apache.commons.logging.Log;
@@ -26,6 +29,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class BargainAPIController {
 
 	private static final long serialVersionUID = 1L;  
+	
+	private static final Logger log = Logger.getLogger(BargainAPIController.class.getName());
 
 	protected final Log logger = LogFactory.getLog(getClass());
 	
@@ -55,13 +60,13 @@ public class BargainAPIController {
 	public String addBar(@RequestBody final Bar bar,
 			HttpServletResponse response, Model model) {
 		
-		EstablishmentPersistor<Bar> establishmentPersistor = new EstablishmentPersistor<Bar>();
+		BarPersistor establishmentPersistor = new BarPersistor();
 		establishmentPersistor.persistEstablishment(bar);
 		
 		return "OK";
 	}
 	
-	@RequestMapping(value = "/bars", method = RequestMethod.GET)
+	@RequestMapping(value = "/bar", method = RequestMethod.GET)
 	public Collection<Bar> getBars(@RequestParam double latitude,
 			@RequestParam double longitude,
 			@RequestParam double radius) {
@@ -73,15 +78,58 @@ public class BargainAPIController {
  		
 		try {
 			
-			bars = pm.detachCopyAll((Collection<Bar>) q.execute());
+			//bars = pm.detachCopyAll((Collection<Bar>) q.execute());
+			bars = (Collection<Bar>) q.execute();
+			Iterator<Bar> barIterator = bars.iterator();
+			while(barIterator.hasNext()) {
+				Bar bar = barIterator.next();
+				log.info("bar: " + bar.getName());
+				log.info("latitude: " + bar.getLocation().getLatitude());
+				log.info("longitude: " + bar.getLocation().getLongitude());
+				log.info("menu items");
+				Collection<MenuItem> menuItems = bar.getMenuItems();
+				Iterator<MenuItem> menuItemIterator = menuItems.iterator();
+				while(menuItemIterator.hasNext()) {
+					MenuItem menuItem = menuItemIterator.next();
+					log.info("product: " + menuItem.getProduct().getName());
+					log.info("price: " + menuItem.getPriceTag().getPrice());
+				}
+				
+			}
 			
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		} finally {
 
 			q.closeAll();
-			pm.close();
+			//pm.close();
 		}
 		return bars;
 	}
+	
+	 @RequestMapping(value = "/bar", method = RequestMethod.DELETE )
+     public void deleteAllBars()  {
+
+		 PersistenceManager pm = PMF.get().getPersistenceManager();
+		 Query q = pm.newQuery(Bar.class);
+	 
+		 Collection<Bar> bars = null;
+	 		
+		 try {
+				
+			bars = (Collection<Bar>) q.execute();
+			
+			// If an object has fields containing child objects that are also 
+			// persistent, the child objects are also deleted
+			// https://developers.google.com/appengine/docs/java/datastore/jdo/creatinggettinganddeletingdata
+			
+			pm.deletePersistentAll(bars);
+			
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		} finally {
+			q.closeAll();
+			pm.close();
+		}
+     }
 }
