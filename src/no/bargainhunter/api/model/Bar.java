@@ -16,7 +16,7 @@ import com.google.appengine.api.datastore.Key;
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
 @Discriminator(strategy = DiscriminatorStrategy.CLASS_NAME)
 public class Bar {
-
+	
 	public Bar() {
 	}
 	

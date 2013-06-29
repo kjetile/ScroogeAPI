@@ -102,7 +102,7 @@ public class BargainAPIController {
 		} finally {
 
 			q.closeAll();
-			//pm.close();
+			pm.close();
 		}
 		return bars;
 	}
