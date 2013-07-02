@@ -16,17 +16,18 @@ public class BarTest {
 	@Test
 	public void testDeserializeBar() throws Exception {
 		String barJson = "{\n    \"name\": \"En bar\",\n    \"location\": {\n        \"latitude\": 1,\n        \"longitude\": 2\n    },\n    \"menuItems\": [\n        {\n            \"product\": {\n                \"name\": \"Ringnes\"\n            },\n            \"priceTag\": {\n                \"price\": 58.5,\n                \"startTime\": 0,\n                \"endTime\": 0\n            }\n        },\n        {\n            \"product\": {\n                \"name\": \"Hansa\"\n            },\n            \"priceTag\": {\n                \"price\": 60,\n                \"startTime\": 0,\n                \"endTime\": 0\n            }\n        }\n    ]\n}";
-		Bar bar = ObjectMapperSingelton.getObjectMapper().readValue(barJson, Bar.class);
+		Establishment bar = ObjectMapperSingelton.getObjectMapper().readValue(barJson, Establishment.class);
 		assertNotNull(bar);
 		assertEquals("En bar", bar.getName());
-		assertEquals(1, bar.getLocation().getLatitude(), 0.001);
-		assertEquals(2, bar.getLocation().getLongitude(), 0.001);		
+		assertEquals(1, bar.getLatitude(), 0.001);
+		assertEquals(2, bar.getLongitude(), 0.001);		
 	}
 	
 	@Test
 	public void testSerializeBar() throws Exception {
-		Location location = new Location(1, 2);
-		Bar bar = new Bar("En bar", location);
+		Establishment bar = new Establishment("En bar");
+		bar.setLatitude(1);
+		bar.setLongitude(2);
 		MenuItem menuItem = new MenuItem();
 		Product p = new Product();
 		p.setName("Hansa");

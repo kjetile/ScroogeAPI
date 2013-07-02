@@ -11,18 +11,22 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.beoui.geocell.annotations.Geocells;
+import com.beoui.geocell.annotations.Latitude;
+import com.beoui.geocell.annotations.Longitude;
 import com.google.appengine.api.datastore.Key;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
 @Discriminator(strategy = DiscriminatorStrategy.CLASS_NAME)
-public class Bar {
+public class Establishment {
 	
-	public Bar() {
+	public enum Type {BAR}
+	
+	public Establishment() {
 	}
 	
-	public Bar(String name, Location location) {
+	public Establishment(String name) {
 		this.name = name;
-		this.location = location;
 	}
 	
 	@PrimaryKey
@@ -32,8 +36,20 @@ public class Bar {
 	@Persistent
 	private String name;
 	
-	@Persistent(dependent = "true")
-	private Location location;
+	@Persistent
+	private Type type;
+	
+	@Persistent
+	@Latitude
+	private double latitude;
+	
+	@Persistent
+	@Longitude
+	private double longitude;
+	
+	@Persistent
+	@Geocells
+	private Collection<String> cells;
 	
 	@Persistent
 	@Element(dependent = "true")
@@ -45,11 +61,31 @@ public class Bar {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Location getLocation() {
-		return location;
+	
+	public Type getType() {
+		return type;
 	}
-	public void setLocation(Location location) {
-		this.location = location;
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+	public double getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+	public Collection<String> getCells() {
+		return cells;
+	}
+	public void setCells(Collection<String> cells) {
+		this.cells = cells;
 	}
 	
 	public Collection<MenuItem>  getMenuItems() {

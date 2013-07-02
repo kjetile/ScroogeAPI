@@ -1,4 +1,4 @@
-package no.bargainhunter.api.persistence;
+package no.bargainhunter.api.orm;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManagerFactory;
