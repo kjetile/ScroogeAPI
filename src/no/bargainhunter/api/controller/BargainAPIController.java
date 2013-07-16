@@ -1,7 +1,6 @@
 package no.bargainhunter.api.controller;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
@@ -9,7 +8,6 @@ import javax.jdo.Query;
 import javax.servlet.http.HttpServletResponse;
 
 import no.bargainhunter.api.model.Establishment;
-import no.bargainhunter.api.model.MenuItem;
 import no.bargainhunter.api.model.Product;
 import no.bargainhunter.api.orm.EstablishmentPersistor;
 import no.bargainhunter.api.orm.EstablishmentQueryHelper;
@@ -76,50 +74,10 @@ public class BargainAPIController {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		EstablishmentQueryHelper establishmentQuery = new EstablishmentQueryHelper(pm);
 		Collection<Establishment> establishments = null;
-		//try {
-			establishments = establishmentQuery.getEstablishments(latitude, longitude, radius);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			logger.error(e.getMessage());
-//		} finally {
-			pm.close();
-		//}
-			
-		return establishments; 
-		
-//		Query q = pm.newQuery(Establishment.class);
-// 
-//		Collection<Establishment> bars = null;
-// 		
-//		try {
-//			
-//			//bars = pm.detachCopyAll((Collection<Bar>) q.execute());
-//			bars = (Collection<Establishment>) q.execute();
-//			Iterator<Establishment> barIterator = bars.iterator();
-//			while(barIterator.hasNext()) {
-//				Establishment bar = barIterator.next();
-//				log.info("bar: " + bar.getName());
-//				log.info("latitude: " + bar.getLocation().getLatitude());
-//				log.info("longitude: " + bar.getLocation().getLongitude());
-//				log.info("menu items");
-//				Collection<MenuItem> menuItems = bar.getMenuItems();
-//				Iterator<MenuItem> menuItemIterator = menuItems.iterator();
-//				while(menuItemIterator.hasNext()) {
-//					MenuItem menuItem = menuItemIterator.next();
-//					log.info("product: " + menuItem.getProduct().getName());
-//					log.info("price: " + menuItem.getPriceTag().getPrice());
-//				}
-//				
-//			}
-//			
-//		} catch (Exception e) {
-//			logger.error(e.getMessage());
-//		} finally {
-//
-//			q.closeAll();
-//			pm.close();
-//		}
-//		return bars;
+
+		establishments = establishmentQuery.getEstablishments(latitude, longitude, radius);
+		pm.close();
+		return establishments; 		
 	}
 	
 	 @RequestMapping(value = "/bar", method = RequestMethod.DELETE )
