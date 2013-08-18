@@ -76,8 +76,55 @@ public class BargainAPIController {
 		Collection<Establishment> establishments = null;
 
 		establishments = establishmentQuery.getEstablishments(latitude, longitude, radius);
+//		for (Establishment establishment : establishments) {
+//			Collection<MenuItem> menuItems = establishment.getMenuItems();
+//			
+//			for (MenuItem menuItem : menuItems) {
+//				menuItem.setPriceTag(pm.detachCopy(menuItem.getPriceTag()));
+//				menuItem.setProduct(pm.detachCopy(menuItem.getProduct()));
+//				
+//			}
+//			establishment.setMenuItems(pm.detachCopyAll(menuItems));
+//		}
+		//establishments = pm.detachCopyAll(establishments);
 		pm.close();
-		return establishments; 		
+		
+		
+//		return establishments; 
+		
+//		Query q = pm.newQuery(Establishment.class);
+// 
+//		Collection<Establishment> bars = null;
+// 		
+//		try {
+//			
+//			//bars = pm.detachCopyAll((Collection<Bar>) q.execute());
+//			bars = (Collection<Establishment>) q.execute();
+//			Iterator<Establishment> barIterator = bars.iterator();
+//			while(barIterator.hasNext()) {
+//				Establishment bar = barIterator.next();
+//				log.info("bar: " + bar.getName());
+//				log.info("latitude: " + bar.getLocation().getLatitude());
+//				log.info("longitude: " + bar.getLocation().getLongitude());
+//				log.info("menu items");
+//				Collection<MenuItem> menuItems = bar.getMenuItems();
+//				Iterator<MenuItem> menuItemIterator = menuItems.iterator();
+//				while(menuItemIterator.hasNext()) {
+//					MenuItem menuItem = menuItemIterator.next();
+//					log.info("product: " + menuItem.getProduct().getName());
+//					log.info("price: " + menuItem.getPriceTag().getPrice());
+//				}
+//				
+//			}
+//			
+//		} catch (Exception e) {
+//			logger.error(e.getMessage());
+//		} finally {
+//
+//			q.closeAll();
+//			pm.close();
+//		}
+		return establishments;
 	}
 	
 	 @RequestMapping(value = "/bar", method = RequestMethod.DELETE )

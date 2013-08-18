@@ -17,7 +17,7 @@ public class MenuItem {
 	@PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Key key;
-	
+	   
 	@Persistent
 	private Product product;
 	

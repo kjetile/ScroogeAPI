@@ -94,4 +94,8 @@ public class Establishment {
 	public void setMenuItems(Collection<MenuItem>  menuItems) {
 		this.menuItems = menuItems;
 	}
+
+	public Key getKey() {
+		return key;
+	}
 }
