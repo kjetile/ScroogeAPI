@@ -1,6 +1,7 @@
 package no.bargainhunter.api.controller;
 
 import java.util.Collection;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
@@ -8,6 +9,7 @@ import javax.jdo.Query;
 import javax.servlet.http.HttpServletResponse;
 
 import no.bargainhunter.api.model.Establishment;
+import no.bargainhunter.api.model.MenuItem;
 import no.bargainhunter.api.model.Product;
 import no.bargainhunter.api.orm.EstablishmentPersistor;
 import no.bargainhunter.api.orm.EstablishmentQueryHelper;
@@ -76,54 +78,21 @@ public class BargainAPIController {
 		Collection<Establishment> establishments = null;
 
 		establishments = establishmentQuery.getEstablishments(latitude, longitude, radius);
-//		for (Establishment establishment : establishments) {
-//			Collection<MenuItem> menuItems = establishment.getMenuItems();
-//			
-//			for (MenuItem menuItem : menuItems) {
-//				menuItem.setPriceTag(pm.detachCopy(menuItem.getPriceTag()));
-//				menuItem.setProduct(pm.detachCopy(menuItem.getProduct()));
-//				
-//			}
-//			establishment.setMenuItems(pm.detachCopyAll(menuItems));
-//		}
-		//establishments = pm.detachCopyAll(establishments);
+		for (Establishment establishment : establishments) {
+			Collection<MenuItem> menuItems = establishment.getMenuItems();
+			
+			/**
+			 * Children are loaded lazily, so we need to 
+			 * touch the child objects we want to return in the json response.
+			 */
+			for (MenuItem menuItem : menuItems) {		
+				log.log(Level.FINE, "got menu item, product: " + menuItem.getProduct().getName());
+				log.log(Level.FINE, "got menu item, price: " + menuItem.getPriceTag().getPrice());
+			}
+		}
+		
 		pm.close();
 		
-		
-//		return establishments; 
-		
-//		Query q = pm.newQuery(Establishment.class);
-// 
-//		Collection<Establishment> bars = null;
-// 		
-//		try {
-//			
-//			//bars = pm.detachCopyAll((Collection<Bar>) q.execute());
-//			bars = (Collection<Establishment>) q.execute();
-//			Iterator<Establishment> barIterator = bars.iterator();
-//			while(barIterator.hasNext()) {
-//				Establishment bar = barIterator.next();
-//				log.info("bar: " + bar.getName());
-//				log.info("latitude: " + bar.getLocation().getLatitude());
-//				log.info("longitude: " + bar.getLocation().getLongitude());
-//				log.info("menu items");
-//				Collection<MenuItem> menuItems = bar.getMenuItems();
-//				Iterator<MenuItem> menuItemIterator = menuItems.iterator();
-//				while(menuItemIterator.hasNext()) {
-//					MenuItem menuItem = menuItemIterator.next();
-//					log.info("product: " + menuItem.getProduct().getName());
-//					log.info("price: " + menuItem.getPriceTag().getPrice());
-//				}
-//				
-//			}
-//			
-//		} catch (Exception e) {
-//			logger.error(e.getMessage());
-//		} finally {
-//
-//			q.closeAll();
-//			pm.close();
-//		}
 		return establishments;
 	}
 	
@@ -155,6 +124,6 @@ public class BargainAPIController {
 	 
 	 @ExceptionHandler(Exception.class) 
 	 public void handleExceptions(Exception anExc) {
-		 anExc.printStackTrace(); // do something better than this ;)
+		 anExc.printStackTrace(); // TODO: do something better than this
 	 }
 }

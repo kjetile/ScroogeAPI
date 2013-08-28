@@ -29,7 +29,7 @@ public class EstablishmentQueryHelper {
 		GeocellQuery baseQuery = new GeocellQuery("type == typeParam", "String typeParam", params);
 		*/
 		GeocellQuery baseQuery = new GeocellQuery();
-		List<Establishment> establishments = GeocellManager.proximitySearch(center, MAX_RESULTS, radius, Establishment.class, baseQuery, pm);
+		Collection<Establishment> establishments = GeocellManager.proximitySearch(center, MAX_RESULTS, radius, Establishment.class, baseQuery, pm);
 		return establishments;
 	}
 }
